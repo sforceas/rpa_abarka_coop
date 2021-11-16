@@ -53,7 +53,7 @@ class Ingredient(models.Model):
     ingredient_type = CharField(verbose_name='Tipo de ingrediente',choices=INGREDIENT_TYPES,max_length=30)
     allergens = ArrayField(
         CharField(choices=ALLERGENS,max_length=30),verbose_name='Alérgenos',blank=True)
-    conservation_method=CharField(verbose_name='Conservación',choices=CONSERVATION_METHODS, max_length=30)
+    conservation_method=CharField(verbose_name='Conservación',choices=CONSERVATION_METHODS, max_length=30,default='No definido')
     lifetime = IntegerField(verbose_name='Vida útil (días)',blank=True)
     price_kg=DecimalField(verbose_name='Precio por kg',blank=True,max_digits=7,decimal_places=2)
     
