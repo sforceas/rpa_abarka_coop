@@ -4,6 +4,8 @@ from django.db.models.fields import CharField, DecimalField, IntegerField, Boole
 from django.contrib.postgres.fields import ArrayField
 from django.db.models.fields.related import ForeignKey, ManyToManyField
 
+from stakeholders.models import Provider
+
 # Create your models here.
 MEASURING_UNITS = [('kg','Kilogramo'),('l','Litro'),('ud','Unidad')]
 
@@ -62,7 +64,7 @@ class ConcreteIngredient(models.Model):
     """Concrete ingredient model"""
     
     ingredient=ForeignKey(to=Ingredient ,verbose_name='Ingrediente',on_delete=CASCADE)
-    provider=CharField(verbose_name='Proveedor *',max_length=80) #Sustituir por Provider
+    provider=ForeignKey(to=Provider,verbose_name='Proveedor *',on_delete=PROTECT) #Sustituir por Provider
     description=CharField(verbose_name='Descripción del producto *',max_length=300,default='')
     reference=CharField(verbose_name='Referencia producto *',max_length=30,default='')
     
