@@ -29,8 +29,8 @@ class IngredientAdmin(admin.ModelAdmin):
 @admin.register(ConcreteIngredient)
 class ConcreteIngredientAdmin(admin.ModelAdmin):
     """Ingredient admin"""
-    list_display = ('name','ingredient_type','pack_kg','price_pack','price_kg','active_flag') # Campos que debe mostrar en el display de admin
-    list_display_links=('name',) # Elementos linkados al detalle
+    list_display = ('ingredient','provider','pack_kg','price_pack','price_kg','active_flag') # Campos que debe mostrar en el display de admin
+    list_display_links=('ingredient','provider') # Elementos linkados al detalle
     list_editable=('price_pack',) # Elementos editables desde admin
 
     search_field= ('name','description','ingredient_type')

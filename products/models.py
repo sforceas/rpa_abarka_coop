@@ -1,6 +1,8 @@
 from django.db import models
+from django.db.models.deletion import CASCADE
 from django.db.models.fields import CharField, DecimalField, IntegerField, BooleanField, DateTimeField
 from django.contrib.postgres.fields import ArrayField
+from django.db.models.fields.related import ForeignKey
 
 # Create your models here.
 
@@ -55,13 +57,17 @@ class Ingredient(models.Model):
     conservation_method=CharField(verbose_name='Conservación',choices=CONSERVATION_METHODS, max_length=30,default='No definido')
     lifetime = IntegerField(verbose_name='Vida útil (días)',blank=True)
 
+    active_flag=BooleanField(verbose_name='Activo',default=True)
+    created=DateTimeField(verbose_name='Creado',auto_now_add=True)
+    modified=DateTimeField(verbose_name='Modificado',auto_now=True)
     def __str__(self):
         """Return title."""
         return f'{self.name}'
 
-class ConcreteIngredient(Ingredient):
+class ConcreteIngredient(models.Model):
     """Concrete ingredient. Herits from Ingredient"""
     
+    ingredient=ForeignKey(to=Ingredient ,verbose_name='Ingrediente',on_delete=CASCADE)
     provider=CharField(verbose_name='Proveedor',max_length=80) #Sustituir por Provider
     pack_kg=DecimalField(verbose_name='Kg o L por paquete',blank=True,max_digits=7,decimal_places=2)
     price_pack=DecimalField(verbose_name='Precio por paquete',blank=True,max_digits=7,decimal_places=2)
@@ -73,4 +79,4 @@ class ConcreteIngredient(Ingredient):
 
     def __str__(self):
         """Return title."""
-        return f'{self.name} de {self.provider}'
+        return f'{self.ingredient} de {self.provider}'
