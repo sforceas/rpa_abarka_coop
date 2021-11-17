@@ -21,20 +21,19 @@ class IngredientAdmin(admin.ModelAdmin):
     list_display_links=('name',) # Elementos linkados al detalle
     list_editable=() # Elementos editables desde admin
     inlines = [ConcreteIngredientInline]
+    
     search_field= ('name','description','ingredient_type')
-    list_filter = ('ingredient_type','allergens')
-    readonly_fields = ()
+    list_filter = ('ingredient_type',)
+    readonly_fields = ('created','modified')
 
 
 @admin.register(ConcreteIngredient)
 class ConcreteIngredientAdmin(admin.ModelAdmin):
     """Ingredient admin"""
-    list_display = ('ingredient','provider','pack_kg','price_pack','price_kg','active_flag') # Campos que debe mostrar en el display de admin
+    list_display = ('ingredient','provider','pack_units','price_pack','price_unit','active_flag') # Campos que debe mostrar en el display de admin
     list_display_links=('ingredient','provider') # Elementos linkados al detalle
     list_editable=('price_pack',) # Elementos editables desde admin
 
     search_field= ('name','description','ingredient_type')
-    list_filter = ('active_flag','provider')
+    list_filter = ('active_flag','provider','allergens')
     readonly_fields = ('created','modified')
-
-#inlines = [IngredientInline,]
