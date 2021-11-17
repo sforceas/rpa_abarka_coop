@@ -54,7 +54,7 @@ ALLERGENS =[
 
 class Allergen(models.Model):
     """Allergens models"""
-    CharField(verbose_name='Nombre',max_length=80)
+    name=CharField(verbose_name='Nombre',max_length=80,default='')
 
     def __str__(self):
         """Return title."""
