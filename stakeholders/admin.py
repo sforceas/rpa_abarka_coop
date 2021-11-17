@@ -16,7 +16,7 @@ class ContactPersonInline(admin.StackedInline):
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
     """Client admin"""
-    list_display = ('name','nif','mail','phone_number','active') # Campos que debe mostrar en el display de admin
+    list_display = ('name','nif','mail','phone_number','active_flag') # Campos que debe mostrar en el display de admin
     list_display_links=('name',) # Elementos linkados al detalle
     list_editable=() # Elementos editables desde admin
     inlines = [ContactPersonInline]
@@ -28,7 +28,7 @@ class ClientAdmin(admin.ModelAdmin):
 @admin.register(Provider)
 class ProviderAdmin(admin.ModelAdmin):
     """Provider admin"""
-    list_display = ('name','nif','delivery_method','payment_method','mail','phone_number','active') # Campos que debe mostrar en el display de admin
+    list_display = ('name','nif','delivery_method','payment_method','mail','phone_number','active_flag') # Campos que debe mostrar en el display de admin
     list_display_links=('name',) # Elementos linkados al detalle
     list_editable=() # Elementos editables desde admin
     inlines = [ContactPersonInline]
