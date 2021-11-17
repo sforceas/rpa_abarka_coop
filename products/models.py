@@ -1,6 +1,6 @@
 from django.db import models
-from django.db.models.deletion import CASCADE
-from django.db.models.fields import CharField, DecimalField, IntegerField, BooleanField, DateTimeField
+from django.db.models.deletion import CASCADE, PROTECT
+from django.db.models.fields import CharField, DecimalField, IntegerField, BooleanField, DateTimeField, TimeField
 from django.contrib.postgres.fields import ArrayField
 from django.db.models.fields.related import ForeignKey, ManyToManyField
 
@@ -24,32 +24,12 @@ INGREDIENT_TYPES = [
     ('others','Otros'),
     ]
 
+RECIPE_TYPES = [('drink','Bebidas'),('hot_drink','Bebidas calientes'),('snacks','Snacks y entrantes'),('main','Principales'),('sauces','Salsas'),('desserts','Postres y dulces')]
+
 CONSERVATION_METHODS = [
     ('storage','Almacén'),
     ('nevera','Nevera'),
     ('freezer','Congelador'),
-]
-
-ALLERGENS =[
-    ('halal','Halal'),
-    ('pig_meat','Cerdo'),
-    ('veggie','Vegetariano'),
-    ('vegan','Vegano'),
-    ('spicy','Picante'),
-    ('gluten','Gluten'),
-    ('dried_fruits','Frutos cáscara'),
-    ('mollusks','Moluscos'),
-    ('fish','Pescado'),
-    ('crustacean','Crustáceos'),
-    ('sesame','Sésamo'),
-    ('eggs','Huevos'),
-    ('milk','Lácteos'),
-    ('mustard','Mostaza'),
-    ('celery','Apio'),
-    ('peanut','Cacahuete'),
-    ('sulfit','Sulfitos'),
-    ('soy','Soja'),
-    ('lupins','Altramuces'),
 ]
 
 class Allergen(models.Model):
@@ -79,7 +59,7 @@ class Ingredient(models.Model):
         return f'{self.name}'
 
 class ConcreteIngredient(models.Model):
-    """Concrete ingredient. Herits from Ingredient"""
+    """Concrete ingredient model"""
     
     ingredient=ForeignKey(to=Ingredient ,verbose_name='Ingrediente',on_delete=CASCADE)
     provider=CharField(verbose_name='Proveedor *',max_length=80) #Sustituir por Provider
@@ -107,3 +87,33 @@ class ConcreteIngredient(models.Model):
     def __str__(self):
         """Return title."""
         return f'{self.ingredient} de {self.provider}'
+    
+class Recipe(models.Model):
+
+    name=CharField(verbose_name='Nombre *',max_length=80)
+    description=CharField(verbose_name='Descripción *',max_length=300,default='')
+    recipe_type=CharField(verbose_name='Referencia producto *',max_length=30,choices=RECIPE_TYPES,default='')
+    
+    min_servings=IntegerField(verbose_name='Raciones mínimas *',max_length=3,default=1)
+    preparation_time=TimeField(verbose_name='Tiempo de preparación',blank=True)
+    ingredient_cost=DecimalField(verbose_name='Coste ingredientes por ración',blank=True,max_digits=7,decimal_places=2,default=0)
+    resource_cost=DecimalField(verbose_name='Coste ingredientes por ración',blank=True,max_digits=7,decimal_places=2,default=0)#Calculado por horas y gasto de recursos
+    total_cost=DecimalField(verbose_name='Coste total por ración',blank=True,max_digits=7,decimal_places=2,default=0)
+
+    active_flag=BooleanField(verbose_name='Activo',default=True)
+    created=DateTimeField(verbose_name='Creado',auto_now_add=True)
+    modified=DateTimeField(verbose_name='Modificado',auto_now=True)
+    
+    def __str__(self):
+        """Return title."""
+        return f'{self.name}'
+
+class ConcreteIngredientInRecipe(models.Model):
+    
+    recipe=ForeignKey(to=Recipe ,verbose_name='Receta',on_delete=CASCADE)
+    concrete_ingredient=ForeignKey(to=ConcreteIngredient ,verbose_name='Ingrediente',on_delete=PROTECT)
+    ammout_per_serving=DecimalField(verbose_name='Cantidad por ración (kg,litro o uds.) *',blank=True,max_digits=7,decimal_places=2,default='0')
+
+    def __str__(self):
+        """Return title."""
+        return f'{self.concrete_ingredient} in {self.recipe}'
