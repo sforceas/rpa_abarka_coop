@@ -47,7 +47,6 @@ class Ingredient(models.Model):
     """Ingredient model"""
     name=models.CharField(verbose_name='Nombre',max_length=80)
     description=CharField(verbose_name='Descripción',blank=True, max_length=300)
-    provider=CharField(verbose_name='Proveedor',max_length=80) #Sustituir por Provider
 
     kcal = IntegerField(verbose_name='Calorías (kcal/100g)',blank=True)
     ingredient_type = CharField(verbose_name='Tipo de ingrediente',choices=INGREDIENT_TYPES,max_length=30)
@@ -55,12 +54,22 @@ class Ingredient(models.Model):
         CharField(choices=ALLERGENS,max_length=30),verbose_name='Alérgenos',blank=True)
     conservation_method=CharField(verbose_name='Conservación',choices=CONSERVATION_METHODS, max_length=30,default='No definido')
     lifetime = IntegerField(verbose_name='Vida útil (días)',blank=True)
-    price_kg=DecimalField(verbose_name='Precio por kg',blank=True,max_digits=7,decimal_places=2)
+
+    def __str__(self):
+        """Return title."""
+        return f'{self.name}'
+
+class ConcreteIngredient(Ingredient):
+    """Concrete ingredient. Herits from Ingredient"""
     
+    provider=CharField(verbose_name='Proveedor',max_length=80) #Sustituir por Provider
+    pack_kg=DecimalField(verbose_name='Kg o L por paquete',blank=True,max_digits=7,decimal_places=2)
+    price_pack=DecimalField(verbose_name='Precio por paquete',blank=True,max_digits=7,decimal_places=2)
+    price_kg=DecimalField(verbose_name='Precio por kg o L',blank=True,max_digits=7,decimal_places=2)
+
     active_flag=BooleanField(verbose_name='Activo',default=True)
     created=DateTimeField(verbose_name='Creado',auto_now_add=True)
     modified=DateTimeField(verbose_name='Modificado',auto_now=True)
-
 
     def __str__(self):
         """Return title."""
