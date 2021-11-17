@@ -98,7 +98,7 @@ class ConcreteIngredient(models.Model):
 
     @property
     def calculate_price_per_unit(self):
-        return round(self.price_unit/self.pack_units,2)
+        return round(self.price_pack/self.pack_units,2)
      
     def save(self, *args, **kwargs):
         self.price_unit = self.calculate_price_per_unit

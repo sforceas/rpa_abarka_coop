@@ -38,6 +38,10 @@ class ConcreteIngredientAdmin(admin.ModelAdmin):
     list_filter = ('active_flag','provider','allergens')
     readonly_fields = ('created','modified')
 
+    def save_model(self, request, obj, form, change):
+        obj.price_unit = round(obj.price_pack/obj.pack_units,2)
+        super().save_model(request, obj, form, change)
+
 @admin.register(Allergen)
 class AllergenAdmin(admin.ModelAdmin):
     """Allergen admin"""
