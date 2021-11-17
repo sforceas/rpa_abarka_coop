@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from products.models import ConcreteIngredient, Ingredient
+from products.models import Allergen, ConcreteIngredient, Ingredient
 
 # Register your models here.
 # Inlime models
@@ -37,3 +37,5 @@ class ConcreteIngredientAdmin(admin.ModelAdmin):
     search_field= ('name','description','ingredient_type')
     list_filter = ('active_flag','provider','allergens')
     readonly_fields = ('created','modified')
+
+@admin.register(Allergen)
