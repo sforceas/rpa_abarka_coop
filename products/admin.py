@@ -43,4 +43,4 @@ class AllergenAdmin(admin.ModelAdmin):
     """Allergen admin"""
     list_display = ('name') # Campos que debe mostrar en el display de admin
     list_display_links=() # Elementos linkados al detalle
-    list_editable=() # Elementos editables desde admin
+    list_editable=('name') # Elementos editables desde admin
