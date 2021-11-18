@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from products.models import Allergen, ConcreteIngredient, ConcreteIngredientInRecipe, Ingredient, Recipe
+from products.models import Allergen, ConcreteIngredient, ConcreteIngredientInRecipe, Ingredient, Recipe, Resource
 
 # Register your models here.
 # Inlime models
@@ -18,6 +18,13 @@ class ConcreteIngredientInRecipeInline(admin.StackedInline):
     can_delete = True
     verbose_name = 'Ingrediente concreto en receta'
     verbose_name_plural = 'Ingredientes concretos en receta'
+
+class ResourceInline(admin.StackedInline):
+    model = Resource
+    extra=0
+    can_delete = True
+    verbose_name = 'Recurso'
+    verbose_name_plural = 'Recursos'
 
 # Register your models here.
 
@@ -48,6 +55,17 @@ class ConcreteIngredientAdmin(admin.ModelAdmin):
         obj.price_unit = round(obj.price_pack/obj.pack_units,2)
         super().save_model(request, obj, form, change)
 
+@admin.register(Resource)
+class ResourceAdmin(admin.ModelAdmin):
+    """Resource admin"""
+    list_display = ('name','resource_type','price_unit') # Campos que debe mostrar en el display de admin
+    list_display_links=('name',) # Elementos linkados al detalle
+    list_editable=('price_unit',) # Elementos editables desde admin
+    
+    search_field= ('name','resource_type')
+    list_filter = ('resource_type',)
+    readonly_fields = ('created','modified')
+
 @admin.register(Allergen)
 class AllergenAdmin(admin.ModelAdmin):
     """Allergen admin"""
@@ -67,6 +85,3 @@ class RecipeAdmin(admin.ModelAdmin):
     list_filter = ('active_flag','recipe_type')
     readonly_fields = ('created','modified')
 
-   # def save_model(self, request, obj, form, change):
-   #     obj.price_unit = round(obj.price_pack/obj.pack_units,2)
-   #     super().save_model(request, obj, form, change)

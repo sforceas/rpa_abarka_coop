@@ -26,6 +26,8 @@ INGREDIENT_TYPES = [
     ('others','Otros'),
     ]
 
+RESOURCE_TYPES = [('person','Personal (hora)'),('machine','Máquina (hora)'),('transport','Transporte (hora)')]
+
 RECIPE_TYPES = [('drink','Bebidas'),('hot_drink','Bebidas calientes'),('snacks','Snacks y entrantes'),('main','Principales'),('sauces','Salsas'),('desserts','Postres y dulces')]
 
 CONSERVATION_METHODS = [
@@ -90,7 +92,22 @@ class ConcreteIngredient(models.Model):
     def __str__(self):
         """Return title."""
         return f'{self.ingredient} de {self.provider}'
+
+class Resource(models.Model):
+    """Resource model"""
+    name=CharField(verbose_name='Nombre del recurso',max_length=80)
+    description=CharField(verbose_name='Descripción',max_length=300,blank=True,default='')
+    resource_type = CharField(verbose_name='Tipo de recurso',choices=RESOURCE_TYPES,max_length=30)
+    price_unit=DecimalField(verbose_name='Precio por unidad',blank=True,max_digits=7,decimal_places=2,default=0)
+
+    active_flag=BooleanField(verbose_name='Activo',default=True)
+    created=DateTimeField(verbose_name='Creado',auto_now_add=True)
+    modified=DateTimeField(verbose_name='Modificado',auto_now=True)
     
+    def __str__(self):
+        """Return title."""
+        return f'{self.name}'
+
 class Recipe(models.Model):
 
     name=CharField(verbose_name='Nombre *',max_length=80)
@@ -140,6 +157,27 @@ class ConcreteIngredientInRecipe(models.Model):
     def save(self, *args, **kwargs):
         self.cost_per_serving = self.calculate_cost_per_ingredient
         super(ConcreteIngredientInRecipe, self).save(*args, **kwargs)
+        self.recipe.save()
+
+
+    def __str__(self):
+        """Return title."""
+        return f'{self.concrete_ingredient} in {self.recipe}'
+    
+class ConcreteResourceInRecipe(models.Model):
+    
+    recipe=ForeignKey(to=Recipe ,verbose_name='Receta',on_delete=CASCADE)
+    resource=ForeignKey(to=Resource ,verbose_name='Recurso *',on_delete=PROTECT)
+    ammout_per_serving=DecimalField(verbose_name='Cantidad por ración *',blank=True,max_digits=7,decimal_places=2,default='0')
+    cost_per_serving=DecimalField(verbose_name='Coste por ración (€)',blank=True,max_digits=7,decimal_places=2,default='0')
+
+    @property
+    def calculate_cost_per_resource(self):
+        return round(self.ammout_per_serving*self.resource.price_unit,2)
+     
+    def save(self, *args, **kwargs):
+        self.cost_per_serving = self.calculate_cost_per_resource
+        super(ConcreteResourceInRecipe, self).save(*args, **kwargs)
         self.recipe.save()
 
 
