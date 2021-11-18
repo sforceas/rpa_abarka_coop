@@ -97,7 +97,7 @@ class Recipe(models.Model):
     description=CharField(verbose_name='Descripción',max_length=300,blank=True,default='')
     recipe_type=CharField(verbose_name='Referencia producto *',max_length=30,choices=RECIPE_TYPES,default='')
     
-    min_servings=IntegerField(verbose_name='Raciones mínimas *',max_length=3,default=1)
+    min_servings=IntegerField(verbose_name='Raciones mínimas *',default=1)
     preparation_time=IntegerField(verbose_name='Tiempo de preparación (min)',blank=True)
     ingredient_cost=DecimalField(verbose_name='Coste ingredientes por ración (€)',blank=True,max_digits=7,decimal_places=2,default=0)
     resource_cost=DecimalField(verbose_name='Coste recursos por ración (€) *',blank=True,max_digits=7,decimal_places=2,default=0)#Calculado por horas y gasto de recursos
