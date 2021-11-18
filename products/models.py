@@ -106,6 +106,20 @@ class Recipe(models.Model):
     created=DateTimeField(verbose_name='Creado',auto_now_add=True)
     modified=DateTimeField(verbose_name='Modificado',auto_now=True)
     
+    @property
+    def calculate_ingredient_cost(self):
+        #coger todos los ConcreteIngredientInRecipe en receta y sumar sus cost_per_serving
+        ingredient_cost=0
+        concrete_ingredients_in_recipe=list(ConcreteIngredientInRecipe.objects.filter(recipe=self,active_flag=True))
+        for ingredient in concrete_ingredients_in_recipe:
+            ingredient_cost = ingredient_cost+ingredient.cost_per_serving
+        return round(ingredient_cost,2)
+     
+    def save(self, *args, **kwargs):
+        self.ingredient_cost = self.calculate_ingredient_cost
+        super(ConcreteIngredient, self).save(*args, **kwargs)
+
+
     def __str__(self):
         """Return title."""
         return f'{self.name}'
@@ -115,6 +129,16 @@ class ConcreteIngredientInRecipe(models.Model):
     recipe=ForeignKey(to=Recipe ,verbose_name='Receta',on_delete=CASCADE)
     concrete_ingredient=ForeignKey(to=ConcreteIngredient ,verbose_name='Ingrediente',on_delete=PROTECT)
     ammout_per_serving=DecimalField(verbose_name='Cantidad por ración (kg,litro o uds.) *',blank=True,max_digits=7,decimal_places=2,default='0')
+    cost_per_serving=DecimalField(verbose_name='Cantidad por ración (kg,litro o uds.) *',blank=True,max_digits=7,decimal_places=2,default='0')
+
+    @property
+    def calculate_cost_per_ingredient(self):
+        return round(self.ammout_per_serving*self.concrete_ingredient.price_unit,2)
+     
+    def save(self, *args, **kwargs):
+        self.cost_per_serving = self.calculate_cost_per_ingredient
+        super(ConcreteIngredient, self).save(*args, **kwargs)
+
 
     def __str__(self):
         """Return title."""

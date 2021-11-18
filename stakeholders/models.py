@@ -37,7 +37,6 @@ class Client(Stakeholder):
     delivery_adress=CharField(verbose_name='Dirección de entrega *',max_length=300,default='')
     billing_time=IntegerField(verbose_name='Período de cobro (días)',default=0)
 
-
 class ContactPerson(models.Model):
     """Contact person model"""
     name=CharField(verbose_name='Nombre *',max_length=80)
