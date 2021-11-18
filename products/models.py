@@ -244,7 +244,7 @@ class ConcreteRecipeInMenu(models.Model):
     def save(self, *args, **kwargs):
         self.cost_per_menu = self.calculate_cost_per_menu
         super(ConcreteRecipeInMenu, self).save(*args, **kwargs)
-        self.recipe.save()
+        self.menu.save()
 
 
     def __str__(self):
