@@ -138,6 +138,7 @@ class ConcreteIngredientInRecipe(models.Model):
     def save(self, *args, **kwargs):
         self.cost_per_serving = self.calculate_cost_per_ingredient
         super(ConcreteIngredientInRecipe, self).save(*args, **kwargs)
+        self.recipe.save()
 
 
     def __str__(self):
