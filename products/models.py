@@ -110,7 +110,7 @@ class Recipe(models.Model):
     def calculate_ingredient_cost(self):
         #coger todos los ConcreteIngredientInRecipe en receta y sumar sus cost_per_serving
         ingredient_cost=0
-        concrete_ingredients_in_recipe=list(ConcreteIngredientInRecipe.objects.filter(recipe=self,active_flag=True))
+        concrete_ingredients_in_recipe=list(ConcreteIngredientInRecipe.objects.filter(recipe=self))
         for ingredient in concrete_ingredients_in_recipe:
             ingredient_cost = ingredient_cost+ingredient.cost_per_serving
         return round(ingredient_cost,2)
