@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from products.models import Allergen, ConcreteIngredient, ConcreteIngredientInRecipe, ConcreteResourceInRecipe, Ingredient, Recipe, Resource
+from products.models import Allergen, ConcreteIngredient, ConcreteIngredientInRecipe, ConcreteRecipeInMenu, ConcreteResourceInRecipe, Ingredient, Menu, Recipe, Resource
 
 # Register your models here.
 # Inlime models
@@ -25,6 +25,13 @@ class ConcreteResourceInRecipenline(admin.StackedInline):
     can_delete = True
     verbose_name = 'Recurso'
     verbose_name_plural = 'Recursos'
+
+class ConcreteRecipeInMenuInLine(admin.StackedInline):
+    model = ConcreteRecipeInMenu
+    extra=0
+    can_delete = True
+    verbose_name = 'Receta'
+    verbose_name_plural = 'Recetas'
 
 # Register your models here.
 
@@ -83,5 +90,17 @@ class RecipeAdmin(admin.ModelAdmin):
 
     search_field= ('name','description','recipe_type')
     list_filter = ('active_flag','recipe_type')
+    readonly_fields = ('created','modified')
+
+@admin.register(Menu)
+class MenuAdmin(admin.ModelAdmin):
+    """Menu admin"""
+    list_display = ('name','menu_type','total_cost','active_flag') # Campos que debe mostrar en el display de admin
+    list_display_links=('name',) # Elementos linkados al detalle
+    list_editable=() # Elementos editables desde admin
+    inlines = [ConcreteRecipeInMenuInLine]
+
+    search_field= ('name','description','menu_type')
+    list_filter = ('active_flag','menu_type')
     readonly_fields = ('created','modified')
 

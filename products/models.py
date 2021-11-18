@@ -30,6 +30,8 @@ RESOURCE_TYPES = [('person','Personal (hora)'),('machine','Máquina (hora)'),('t
 
 RECIPE_TYPES = [('drink','Bebidas'),('hot_drink','Bebidas calientes'),('snacks','Snacks y entrantes'),('main','Principales'),('sauces','Salsas'),('desserts','Postres y dulces')]
 
+MENU_TYPES = [('coffee_break','Coffee Break'),('festival','Ferias y festivales'),('wedding','Bodas'),('experiencie','Experiencia gastronómica')]
+
 CONSERVATION_METHODS = [
     ('storage','Almacén'),
     ('nevera','Nevera'),
@@ -112,7 +114,7 @@ class Recipe(models.Model):
 
     name=CharField(verbose_name='Nombre *',max_length=80)
     description=CharField(verbose_name='Descripción',max_length=300,blank=True,default='')
-    recipe_type=CharField(verbose_name='Referencia producto *',max_length=30,choices=RECIPE_TYPES,default='')
+    recipe_type=CharField(verbose_name='Tipo de receta*',max_length=30,choices=RECIPE_TYPES,default='')
     
     min_servings=IntegerField(verbose_name='Raciones mínimas *',default=1)
     preparation_time=IntegerField(verbose_name='Tiempo de preparación (min)',blank=True)
@@ -193,3 +195,61 @@ class ConcreteResourceInRecipe(models.Model):
     def __str__(self):
         """Return title."""
         return f'{self.resource} in {self.recipe}'
+
+class Menu(models.Model):
+
+    name=CharField(verbose_name='Nombre *',max_length=80)
+    description=CharField(verbose_name='Descripción',max_length=300,blank=True,default='')
+    menu_type=CharField(verbose_name='Tipo de menú *',max_length=30,choices=MENU_TYPES,default='')
+    
+    min_servings=IntegerField(verbose_name='Raciones mínimas *',default=1)
+    preparation_time=IntegerField(verbose_name='Tiempo de preparación (min)',blank=True)
+    #ingredient_cost=DecimalField(verbose_name='Coste ingredientes por ración (€)',blank=True,max_digits=7,decimal_places=2,default=0)
+    #resource_cost=DecimalField(verbose_name='Coste recursos por ración (€) *',blank=True,max_digits=7,decimal_places=2,default=0)#Calculado por horas y gasto de recursos
+    total_cost=DecimalField(verbose_name='Coste total por menú (€)',blank=True,max_digits=7,decimal_places=2,default=0)
+
+    active_flag=BooleanField(verbose_name='Activo',default=True)
+    created=DateTimeField(verbose_name='Creado',auto_now_add=True)
+    modified=DateTimeField(verbose_name='Modificado',auto_now=True)
+    
+    @property
+    def calculate_total_cost(self):
+        total_cost=0
+        recipes_in_menu=list(ConcreteRecipeInMenu.objects.filter(menu=self))
+        for recipe in recipes_in_menu:
+            total_cost = total_cost+recipe.cost_per_menu
+        return round(total_cost,2)
+    
+
+    def save(self, *args, **kwargs):
+        self.total_cost = self.calculate_total_cost
+        super(Menu, self).save(*args, **kwargs)
+
+
+    def __str__(self):
+        """Return title."""
+        return f'{self.name}'
+
+class ConcreteRecipeInMenu(models.Model):
+    
+    menu=ForeignKey(to=Menu ,verbose_name='Menú *',on_delete=CASCADE)
+    recipe=ForeignKey(to=Recipe ,verbose_name='Receta *',on_delete=PROTECT)
+    rations_per_menu=IntegerField(verbose_name='Raciones por menú *',blank=True,default='1')
+    cost_per_menu=DecimalField(verbose_name='Coste por menú (€)',blank=True,max_digits=7,decimal_places=2,default='0')
+
+    @property
+    def calculate_cost_per_menu(self):
+        return round(self.rations_per_menu*self.recipe.total_cost,2)
+     
+    def save(self, *args, **kwargs):
+        self.cost_per_menu = self.calculate_cost_per_menu
+        super(ConcreteRecipeInMenu, self).save(*args, **kwargs)
+        self.recipe.save()
+
+
+    def __str__(self):
+        """Return title."""
+        return f'{self.resource} in {self.recipe}'
+
+
+
