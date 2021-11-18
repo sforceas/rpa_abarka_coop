@@ -249,7 +249,7 @@ class ConcreteRecipeInMenu(models.Model):
 
     def __str__(self):
         """Return title."""
-        return f'{self.resource} in {self.recipe}'
+        return f'{self.recipe} in {self.menu}'
 
 
 
