@@ -37,6 +37,7 @@ CONSERVATION_METHODS = [
 class Allergen(models.Model):
     """Allergens models"""
     name=CharField(verbose_name='Nombre',max_length=80,default='')
+    icon=models.CharField(_(""), max_length=50)
 
     def __str__(self):
         """Return title."""
@@ -45,7 +46,7 @@ class Allergen(models.Model):
 class Ingredient(models.Model):
     """Ingredient model"""
     name=CharField(verbose_name='Nombre',max_length=80)
-    description=CharField(verbose_name='Descripción',blank=True, max_length=300)
+    description=CharField(verbose_name='Descripción',max_length=300,blank=True,default='')
 
     kcal = IntegerField(verbose_name='Calorías (kcal/100g)',blank=True)
     ingredient_type = CharField(verbose_name='Tipo de ingrediente',choices=INGREDIENT_TYPES,max_length=30)
@@ -64,8 +65,8 @@ class ConcreteIngredient(models.Model):
     """Concrete ingredient model"""
     
     ingredient=ForeignKey(to=Ingredient ,verbose_name='Ingrediente',on_delete=CASCADE)
-    provider=ForeignKey(to=Provider,verbose_name='Proveedor *',on_delete=PROTECT) #Sustituir por Provider
-    description=CharField(verbose_name='Descripción del producto *',max_length=300,default='')
+    provider=ForeignKey(to=Provider,verbose_name='Proveedor *',on_delete=PROTECT)
+    description=CharField(verbose_name='Descripción',max_length=300,blank=True,default='')
     reference=CharField(verbose_name='Referencia producto *',max_length=30,default='')
     
     allergens = ManyToManyField(to=Allergen,verbose_name='Alérgenos y dietas especiales *',max_length=80,blank=True)
@@ -93,14 +94,14 @@ class ConcreteIngredient(models.Model):
 class Recipe(models.Model):
 
     name=CharField(verbose_name='Nombre *',max_length=80)
-    description=CharField(verbose_name='Descripción *',max_length=300,default='')
+    description=CharField(verbose_name='Descripción',max_length=300,blank=True,default='')
     recipe_type=CharField(verbose_name='Referencia producto *',max_length=30,choices=RECIPE_TYPES,default='')
     
     min_servings=IntegerField(verbose_name='Raciones mínimas *',max_length=3,default=1)
-    preparation_time=TimeField(verbose_name='Tiempo de preparación',blank=True)
-    ingredient_cost=DecimalField(verbose_name='Coste ingredientes por ración',blank=True,max_digits=7,decimal_places=2,default=0)
-    resource_cost=DecimalField(verbose_name='Coste ingredientes por ración',blank=True,max_digits=7,decimal_places=2,default=0)#Calculado por horas y gasto de recursos
-    total_cost=DecimalField(verbose_name='Coste total por ración',blank=True,max_digits=7,decimal_places=2,default=0)
+    preparation_time=IntegerField(verbose_name='Tiempo de preparación (min)',blank=True)
+    ingredient_cost=DecimalField(verbose_name='Coste ingredientes por ración (€)',blank=True,max_digits=7,decimal_places=2,default=0)
+    resource_cost=DecimalField(verbose_name='Coste recursos por ración (€) *',blank=True,max_digits=7,decimal_places=2,default=0)#Calculado por horas y gasto de recursos
+    total_cost=DecimalField(verbose_name='Coste total por ración (€)',blank=True,max_digits=7,decimal_places=2,default=0)
 
     active_flag=BooleanField(verbose_name='Activo',default=True)
     created=DateTimeField(verbose_name='Creado',auto_now_add=True)
@@ -127,9 +128,9 @@ class Recipe(models.Model):
 class ConcreteIngredientInRecipe(models.Model):
     
     recipe=ForeignKey(to=Recipe ,verbose_name='Receta',on_delete=CASCADE)
-    concrete_ingredient=ForeignKey(to=ConcreteIngredient ,verbose_name='Ingrediente',on_delete=PROTECT)
+    concrete_ingredient=ForeignKey(to=ConcreteIngredient ,verbose_name='Ingrediente *',on_delete=PROTECT)
     ammout_per_serving=DecimalField(verbose_name='Cantidad por ración (kg,litro o uds.) *',blank=True,max_digits=7,decimal_places=2,default='0')
-    cost_per_serving=DecimalField(verbose_name='Cantidad por ración (kg,litro o uds.) *',blank=True,max_digits=7,decimal_places=2,default='0')
+    cost_per_serving=DecimalField(verbose_name='Coste por ración (€)',blank=True,max_digits=7,decimal_places=2,default='0')
 
     @property
     def calculate_cost_per_ingredient(self):
