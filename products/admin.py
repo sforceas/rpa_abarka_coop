@@ -79,7 +79,7 @@ class RecipeAdmin(admin.ModelAdmin):
     list_display = ('name','recipe_type','preparation_time','total_cost','active_flag') # Campos que debe mostrar en el display de admin
     list_display_links=('name',) # Elementos linkados al detalle
     list_editable=() # Elementos editables desde admin
-    inlines = [ConcreteIngredientInRecipeInline]
+    inlines = [ConcreteIngredientInRecipeInline,ResourceInline]
 
     search_field= ('name','description','recipe_type')
     list_filter = ('active_flag','recipe_type')
