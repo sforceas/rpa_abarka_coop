@@ -133,7 +133,7 @@ class Recipe(models.Model):
         return round(ingredient_cost,2)
     
     @property
-    def calculate_resources_cost(self):
+    def calculate_resource_cost(self):
         resource_cost=0
         concrete_resources_in_recipe=list(ConcreteResourceInRecipe.objects.filter(recipe=self))
         for resource in concrete_resources_in_recipe:
