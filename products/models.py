@@ -183,4 +183,4 @@ class ConcreteResourceInRecipe(models.Model):
 
     def __str__(self):
         """Return title."""
-        return f'{self.concrete_ingredient} in {self.recipe}'
+        return f'{self.resource} in {self.recipe}'
