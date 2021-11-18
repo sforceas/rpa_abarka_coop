@@ -117,7 +117,7 @@ class Recipe(models.Model):
      
     def save(self, *args, **kwargs):
         self.ingredient_cost = self.calculate_ingredient_cost
-        super(ConcreteIngredient, self).save(*args, **kwargs)
+        super(Recipe, self).save(*args, **kwargs)
 
 
     def __str__(self):
@@ -137,7 +137,7 @@ class ConcreteIngredientInRecipe(models.Model):
      
     def save(self, *args, **kwargs):
         self.cost_per_serving = self.calculate_cost_per_ingredient
-        super(ConcreteIngredient, self).save(*args, **kwargs)
+        super(ConcreteIngredientInRecipe, self).save(*args, **kwargs)
 
 
     def __str__(self):
