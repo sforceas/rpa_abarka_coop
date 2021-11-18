@@ -37,7 +37,7 @@ CONSERVATION_METHODS = [
 class Allergen(models.Model):
     """Allergens models"""
     name=CharField(verbose_name='Nombre',max_length=80,default='')
-    icon=models.CharField(_(""), max_length=50)
+    emoji=CharField(verbose_name='Nombre',max_length=10,blank=True,default='')
 
     def __str__(self):
         """Return title."""
