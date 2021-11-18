@@ -126,13 +126,20 @@ class Recipe(models.Model):
     
     @property
     def calculate_ingredient_cost(self):
-        #coger todos los ConcreteIngredientInRecipe en receta y sumar sus cost_per_serving
         ingredient_cost=0
         concrete_ingredients_in_recipe=list(ConcreteIngredientInRecipe.objects.filter(recipe=self))
         for ingredient in concrete_ingredients_in_recipe:
             ingredient_cost = ingredient_cost+ingredient.cost_per_serving
         return round(ingredient_cost,2)
-     
+    
+    @property
+    def calculate_resources_cost(self):
+        resource_cost=0
+        concrete_resources_in_recipe=list(ConcreteResourceInRecipe.objects.filter(recipe=self))
+        for resource in concrete_resources_in_recipe:
+            resource_cost = resource_cost+resource.cost_per_serving
+        return round(resource_cost,2)
+
     def save(self, *args, **kwargs):
         self.ingredient_cost = self.calculate_ingredient_cost
         self.total_cost=self.ingredient_cost+self.resource_cost
