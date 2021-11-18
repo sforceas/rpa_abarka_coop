@@ -142,6 +142,8 @@ class Recipe(models.Model):
 
     def save(self, *args, **kwargs):
         self.ingredient_cost = self.calculate_ingredient_cost
+        self.resource_cost = self.calculate_resource_cost
+
         self.total_cost=self.ingredient_cost+self.resource_cost
         super(Recipe, self).save(*args, **kwargs)
 
