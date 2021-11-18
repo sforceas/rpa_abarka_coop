@@ -37,7 +37,7 @@ CONSERVATION_METHODS = [
 class Allergen(models.Model):
     """Allergens models"""
     name=CharField(verbose_name='Nombre',max_length=80,default='')
-    emoji=CharField(verbose_name='Nombre',max_length=10,blank=True,default='')
+    emoji=CharField(verbose_name='Emoticono',max_length=10,blank=True,default='')
 
     def __str__(self):
         """Return title."""
@@ -118,6 +118,7 @@ class Recipe(models.Model):
      
     def save(self, *args, **kwargs):
         self.ingredient_cost = self.calculate_ingredient_cost
+        self.total_cost=self.ingredient_cost+self.resource_cost
         super(Recipe, self).save(*args, **kwargs)
 
 
