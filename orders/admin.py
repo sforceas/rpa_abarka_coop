@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from orders.models import ConcreteExtraInOrder, ConcreteMenuInOrder
+from orders.models import ConcreteExtraInOrder, ConcreteMenuInOrder, Order
 
 class ConcreteMenuInOrderInline(admin.StackedInline):
     model = ConcreteMenuInOrder
@@ -17,7 +17,7 @@ class ConcreteExtraInOrderInline(admin.StackedInline):
     verbose_name_plural = 'Extras'
 
 # Register your models here.
-
+@admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     """Order admin"""
     list_display = ('name','order_type','start_date','total_cost','active_flag','completed_flag') # Campos que debe mostrar en el display de admin
