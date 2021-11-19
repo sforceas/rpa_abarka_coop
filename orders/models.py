@@ -5,6 +5,7 @@ from django.db.models.fields import BooleanField, CharField, DateTimeField, Deci
 from django.db.models.fields.related import ForeignKey
 from products.models import Extra, Menu
 from stakeholders.models import Client
+from workers.models import Worker
 
 ORDER_TYPES=[('catering','Catering'),('festival','Festival'),('wedding','Boda')]
 # Create your models here.
@@ -22,6 +23,7 @@ class Order(models.Model):
     
     menu_ammount=IntegerField(verbose_name='Número de menús',default=1)
     menu_cost=DecimalField(verbose_name='Coste de menús (€)',blank=True,max_digits=7,decimal_places=2,default=0)
+    worker_cost=DecimalField(verbose_name='Coste de menús (€)',blank=True,max_digits=7,decimal_places=2,default=0)
     extra_cost=DecimalField(verbose_name='Coste de extras (€)',blank=True,max_digits=7,decimal_places=2,default=0)
     total_cost=DecimalField(verbose_name='Coste total (€)',blank=True,max_digits=7,decimal_places=2,default=0)
 
@@ -39,6 +41,15 @@ class Order(models.Model):
         for menu in menus_in_order:
             menu_cost = menu_cost+menu.total_cost
         return round(menu_cost,2)
+    
+    @property
+    def calculate_worker_cost(self):
+        worker_cost=0
+        workers_in_order=list(ConcreteWorkerInOrder.objects.filter(order=self))
+        for worker in workers_in_order:
+            worker_cost = worker_cost+worker.total_cost
+        return round(worker_cost,2)
+    
     
     @property
     def calculate_extra_cost(self):
@@ -106,3 +117,28 @@ class ConcreteExtraInOrder(models.Model):
     def __str__(self):
         """Return title."""
         return f'{self.extra} in {self.order}'
+
+class ConcreteWorkerInOrder(models.Model):
+    
+    order=ForeignKey(to=Order ,verbose_name='Pedido *',on_delete=CASCADE)
+    worker=ForeignKey(to=Worker ,verbose_name='Trabajador *',on_delete=PROTECT)
+    
+    start_date=DateTimeField(verbose_name='Fecha de inicio *')
+    end_date=DateTimeField(verbose_name='Fecha de finalización *')
+    hours_ammount=IntegerField(verbose_name='Número de horas *',blank=True,default='1')
+    total_cost=DecimalField(verbose_name='Coste total (€)',blank=True,max_digits=7,decimal_places=2,default='0')
+
+   #CALCULAR HORAS A PARTIR DE HORARIO 
+
+    @property
+    def calculate_total_cost(self):
+        return round(self.hours_ammount*self.worker.hour_cost,2)
+     
+    def save(self, *args, **kwargs):
+        self.total_cost = self.calculate_total_cost
+        super(ConcreteWorkerInOrder, self).save(*args, **kwargs)
+        self.order.save()
+
+    def __str__(self):
+        """Return title."""
+        return f'{self.first_name} en {self.order}'
