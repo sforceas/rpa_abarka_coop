@@ -141,4 +141,4 @@ class ConcreteWorkerInOrder(models.Model):
 
     def __str__(self):
         """Return title."""
-        return f'{self.first_name} en {self.order}'
+        return f'{self.worker} en {self.order}'
