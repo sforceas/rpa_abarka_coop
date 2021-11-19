@@ -14,7 +14,7 @@ class Worker(models.Model):
     driving_license_flag=BooleanField(verbose_name='Carnet de conducir',default=False)
     own_car_flag=BooleanField(verbose_name='Coche propio',default=False)
 
-    phone_number=CharField(verbose_name='Teléfono *',max_length=20,choices=WORKER_TYPES,default='')
+    phone_number=CharField(verbose_name='Teléfono *',max_length=20,default='')
     mail=CharField(verbose_name='Correo electrónico *',max_length=80,default='')
 
     hour_cost=DecimalField(verbose_name='Coste por hora (€)',blank=True,max_digits=7,decimal_places=2,default=0)
