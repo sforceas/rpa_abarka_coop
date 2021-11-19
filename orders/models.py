@@ -14,7 +14,7 @@ class Order(models.Model):
     name=CharField(verbose_name='Nombre *',max_length=80)
     description=CharField(verbose_name='Detalles del evento',max_length=600,blank=True,default='')
     order_type=CharField(verbose_name='Tipo de pedido *',max_length=30,choices=ORDER_TYPES,default='')
-    client=ForeignKey(to=Client,verbose_name='Cliente *')
+    client=ForeignKey(to=Client,verbose_name='Cliente *',on_delete=PROTECT)
 
     start_date=DateTimeField(verbose_name='Fecha de inicio *')
     end_date=DateTimeField(verbose_name='Fecha de finalización *')
