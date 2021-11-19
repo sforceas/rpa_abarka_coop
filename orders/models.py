@@ -63,7 +63,7 @@ class Order(models.Model):
         self.menu_cost = self.calculate_menu_cost
         self.extra_cost = self.calculate_extra_cost
         self.total_cost = self.menu_cost+self.extra_cost
-        super(Menu, self).save(*args, **kwargs)
+        super(Order, self).save(*args, **kwargs)
 
     def __str__(self):
         """Return title."""
