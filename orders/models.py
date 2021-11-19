@@ -10,6 +10,8 @@ from workers.models import Worker
 ORDER_TYPES=[('catering','Catering'),('festival','Festival'),('wedding','Boda')]
 # Create your models here.
 
+TASK_TYPES=[('production','Producción'),('camarera','Camarera'),('transport','Transporte'))]
+
 class Order(models.Model):
 
     name=CharField(verbose_name='Nombre *',max_length=80)
@@ -124,7 +126,8 @@ class ConcreteWorkerInOrder(models.Model):
     
     order=ForeignKey(to=Order ,verbose_name='Pedido *',on_delete=CASCADE)
     worker=ForeignKey(to=Worker ,verbose_name='Trabajador *',on_delete=PROTECT)
-    
+    task=CharField(verbose_name='Tarea *',max_length=30,choices=TASK_TYPES,default='')
+
     start_date=DateTimeField(verbose_name='Fecha de inicio *')
     end_date=DateTimeField(verbose_name='Fecha de finalización *')
     hours_ammount=IntegerField(verbose_name='Número de horas *',blank=True,default='1')
