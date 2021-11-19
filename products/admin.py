@@ -110,7 +110,6 @@ class ExtraAdmin(admin.ModelAdmin):
     list_display = ('name','extra_type','total_cost','active_flag') # Campos que debe mostrar en el display de admin
     list_display_links=('name',) # Elementos linkados al detalle
     list_editable=() # Elementos editables desde admin
-    inlines = [ConcreteRecipeInMenuInLine]
 
     search_field= ('name','description','extra_type')
     list_filter = ('active_flag','extra_type')
