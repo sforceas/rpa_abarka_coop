@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from products.models import Allergen, ConcreteIngredient, ConcreteIngredientInRecipe, ConcreteRecipeInMenu, ConcreteResourceInRecipe, Ingredient, Menu, Recipe, Resource
+from products.models import Allergen, ConcreteIngredient, ConcreteIngredientInRecipe, ConcreteRecipeInMenu, ConcreteResourceInRecipe, Extra, Ingredient, Menu, Recipe, Resource
 
 # Register your models here.
 # Inlime models
@@ -104,3 +104,14 @@ class MenuAdmin(admin.ModelAdmin):
     list_filter = ('active_flag','menu_type')
     readonly_fields = ('created','modified')
 
+@admin.register(Extra)
+class ExtraAdmin(admin.ModelAdmin):
+    """Extra admin"""
+    list_display = ('name','extra_type','total_cost','active_flag') # Campos que debe mostrar en el display de admin
+    list_display_links=('name',) # Elementos linkados al detalle
+    list_editable=() # Elementos editables desde admin
+    inlines = [ConcreteRecipeInMenuInLine]
+
+    search_field= ('name','description','extra_type')
+    list_filter = ('active_flag','extra_type')
+    readonly_fields = ('created','modified')

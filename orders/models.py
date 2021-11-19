@@ -21,7 +21,6 @@ class Order(models.Model):
     labour_days=IntegerField(verbose_name='Días laborables * ',default=1)
     
     menu_ammount=IntegerField(verbose_name='Número de menús',default=1)
-    #preparation_time=IntegerField(verbose_name='Tiempo de preparación (min)',blank=True)
     menu_cost=DecimalField(verbose_name='Coste de menús (€)',blank=True,max_digits=7,decimal_places=2,default=0)
     extra_cost=DecimalField(verbose_name='Coste de extras (€)',blank=True,max_digits=7,decimal_places=2,default=0)
     total_cost=DecimalField(verbose_name='Coste total por menú (€)',blank=True,max_digits=7,decimal_places=2,default=0)
