@@ -23,7 +23,7 @@ class Order(models.Model):
     menu_ammount=IntegerField(verbose_name='Número de menús',default=1)
     menu_cost=DecimalField(verbose_name='Coste de menús (€)',blank=True,max_digits=7,decimal_places=2,default=0)
     extra_cost=DecimalField(verbose_name='Coste de extras (€)',blank=True,max_digits=7,decimal_places=2,default=0)
-    total_cost=DecimalField(verbose_name='Coste total por menú (€)',blank=True,max_digits=7,decimal_places=2,default=0)
+    total_cost=DecimalField(verbose_name='Coste total (€)',blank=True,max_digits=7,decimal_places=2,default=0)
 
     completed_flag=BooleanField(verbose_name='Completado',default=False)
     completed_comments=TextField(verbose_name='Observaciones final de evento',blank=True)
