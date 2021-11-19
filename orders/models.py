@@ -10,7 +10,7 @@ from workers.models import Worker
 ORDER_TYPES=[('catering','Catering'),('festival','Festival'),('wedding','Boda')]
 # Create your models here.
 
-TASK_TYPES=[('production','Producción'),('camarera','Camarera'),('transport','Transporte'))]
+TASK_TYPES=[('production','Producción'),('camarera','Camarera'),('transport','Transporte')]
 
 class Order(models.Model):
 
