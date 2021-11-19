@@ -56,7 +56,6 @@ class Order(models.Model):
             menu_ammount = menu_ammount+menu.menu_ammount
         return round(menu_ammount,2)
 
-    @property
     def save(self, *args, **kwargs):
         self.menu_ammount = self.calculate_menu_ammount
         self.menu_cost = self.calculate_menu_cost
