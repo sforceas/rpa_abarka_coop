@@ -32,6 +32,8 @@ RECIPE_TYPES = [('drink','Bebidas'),('hot_drink','Bebidas calientes'),('snacks',
 
 MENU_TYPES = [('coffee_break','Coffee Break'),('festival','Ferias y festivales'),('wedding','Bodas'),('experiencie','Experiencia gastronómica')]
 
+EXTRA_TYPES = [('personal','Personal (hora)'),('transport','Transporte (hora)'),('dishes','Vajilla'),('decoration','Decoración'),('rent','Alquiler')]
+
 CONSERVATION_METHODS = [
     ('storage','Almacén'),
     ('nevera','Nevera'),
@@ -251,5 +253,16 @@ class ConcreteRecipeInMenu(models.Model):
         """Return title."""
         return f'{self.recipe} in {self.menu}'
 
+class Extra(models.Model):
+    name=CharField(verbose_name='Nombre *',max_length=80)
+    description=CharField(verbose_name='Descripción',max_length=300,blank=True,default='')
+    extra_type=CharField(verbose_name='Tipo de extra *',max_length=30,choices=EXTRA_TYPES,default='')
+    total_cost=DecimalField(verbose_name='Coste por unidad (€)*',max_digits=7,decimal_places=2,default=0)
+    
+    active_flag=BooleanField(verbose_name='Activo',default=True)
+    created=DateTimeField(verbose_name='Creado',auto_now_add=True)
+    modified=DateTimeField(verbose_name='Modificado',auto_now=True)
 
-
+    def __str__(self):
+        """Return title."""
+        return f'{self.name}'
