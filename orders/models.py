@@ -70,7 +70,9 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         self.menu_ammount = self.calculate_menu_ammount
         self.menu_cost = self.calculate_menu_cost
+        self.worker_cost = self.calculate_worker_cost
         self.extra_cost = self.calculate_extra_cost
+
         self.total_cost = self.menu_cost+self.extra_cost
         super(Order, self).save(*args, **kwargs)
 
