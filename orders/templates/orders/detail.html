@@ -11,8 +11,8 @@
 
 <div class="album py-5 bg-light">
   <div class="container">
+      
     <h1>Detalles del pedido</h1>
-
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       <div class="card-group">
         <div class="card" style="width: 100%; height: 50%px;">
@@ -27,18 +27,18 @@
       </div>
     </div>
 
-    <h1>Menús</h1>
+    <h2>Menús</h2>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <div class="card-group">
             <h2>Coste de menús: {{order.menu_cost}} €</h2>
             {% for menu in menus %}  
                 <div class="card" style="width: 100%; height: 50%px;">
                     <div class="card-body">
-                        <h5 class="card-title">{{menu.menu}}</h5>
+                        <h5 class="card-title">{{menu.menu.name}}</h5>
                         <p class="card-text">Cantidad: {{menu.menu_ammount}}.</p>
-                        <p class="card-text">Coste total: {{menu.total_cost}} €.</p>
+                        <p class="card-text">Coste total: {{menu.total_cost}} €.</p>                              
                     </div>
-                </div>    
+                </div>
             {% endfor %}
         </div>
     </div>
