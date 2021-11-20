@@ -25,58 +25,58 @@
           </div>
         </div>
       </div>
+    </div>
 
-        <h2>Menús</h2>
-        <p>Coste de menús: {{order.menu_cost}}</p>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <div class="card-group"></div>
+    <h1>Menús</h1>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="card-group">
+            <h2>Coste de menús: {{order.menu_cost}} €</h2>
             {% for menu in menus %}  
-            <div class="card" style="width: 100%; height: 50%px;">
-                <div class="card-body">
-                <h5 class="card-title">{{menu.menu}}</h5>
-                <p class="card-text">Cantidad: {{menu.menu_ammount}}.</p>
-                <p class="card-text">Coste total: {{menu.total_cost}} €.</p>
-                </div>
-            </div>
-            
+                <div class="card" style="width: 100%; height: 50%px;">
+                    <div class="card-body">
+                    <h5 class="card-title">{{menu.menu}}</h5>
+                    <p class="card-text">Cantidad: {{menu.menu_ammount}}.</p>
+                    <p class="card-text">Coste total: {{menu.total_cost}} €.</p>
+                    </div>
+                </div>    
             {% endfor %}
         </div>
+    </div>
 
-        <h2>Trabajadores</h2>
-        <p>Coste de menús: {{order.worker_cost}}</p>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <div class="card-group"></div>
+    <h2>Trabajadores</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="card-group">
+            <h2>Coste de trabajadores: {{order.worker_cost}} €</h2>
             {% for worker in workers %}  
-            <div class="card" style="width: 100%; height: 50%px;">
-                <div class="card-body">
-                    <h5 class="card-title">{{worker.worker}}</h5>
-                    <p class="card-text">Tarea: {{worker.task}}.</p>
-                    <p class="card-text">Inicio: {{worker.start_date|date:'d-m-Y H:i'}}.</p>
-                    <p class="card-text">Horas: {{worker.hours_ammount}} horas.</p>                              
+                <div class="card" style="width: 100%; height: 50%px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{worker.worker}}</h5>
+                        <p class="card-text">Tarea: {{worker.task}}.</p>
+                        <p class="card-text">Inicio: {{worker.start_date|date:'d-m-Y H:i'}}.</p>
+                        <p class="card-text">Horas: {{worker.hours_ammount}} horas.</p>                              
+                    </div>
                 </div>
-            </div>
-            
             {% endfor %}
         </div>
+    </div>
 
-        <h2>Extras</h2>
-        <p>Coste de extras: {{order.extra_cost}}</p>
-
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <div class="card-group"></div>
+    <h2>Extras</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="card-group">
+        <h2>Coste de trabajadores: {{order.worker_cost}} €</h2>
             {% for extra in extras %}  
             <div class="card" style="width: 100%; height: 50%px;">
                 <div class="card-body">
-                <h5 class="card-title">{{extra.extra}}</h5>
-                <p class="card-text">Cantidad: {{extra.extra_ammount}}.</p>
-                <p class="card-text">Coste total: {{extra.total_cost}} €.</p>
+                    <h5 class="card-title">{{extra.extra}}</h5>
+                    <p class="card-text">Cantidad: {{extra.extra_ammount}}.</p>
+                    <p class="card-text">Coste total: {{extra.total_cost}} €.</p>
                 </div>
             </div>
-            
             {% endfor %}
         </div>
+    </div>
+    
   </div>
 </div>
 
-</div>
 {% endblock %}
