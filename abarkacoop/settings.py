@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "products",
     "stakeholders",
     "workers",
+    "bootstrap5",
 
 ]
 
