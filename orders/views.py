@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from orders.models import Order
+from orders.models import ConcreteExtraInOrder, ConcreteMenuInOrder, Order
 
 # Create your views here.
 
@@ -20,8 +20,15 @@ def detailed_order(request,pk):
     """ Show detailed order """
     
     order = Order.objects.get(pk=pk)
+    menus_in_order=ConcreteMenuInOrder.objects.filter(order=order)
+    workers_in_order=ConcreteMenuInOrder.objects.filter(order=order)
+    extras_in_order=ConcreteExtraInOrder.objects.filter(order=order)
 
     context = {
         'order':order,
+        'menus':menus_in_order,
+        'workers':workers_in_order,
+        'extras':extras_in_order,
     }
+    
     return render(request,'orders/detail.html',context)

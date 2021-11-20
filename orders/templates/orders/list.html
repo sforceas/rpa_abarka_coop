@@ -30,6 +30,27 @@
       </div>
     {% endfor %}
   </div>
+
+
+  <h1>Pedidos completados:</h1>
+
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+  {% for order in completed_orders %}  
+    <div class="card-group">
+      <div class="card" style="width: 100%; height: 50%px;">
+        <div class="card-body">
+          <h5 class="card-title">{{order.name}}</h5>
+          <p class="card-text">Cliente: {{order.client}}.</p>
+          <p class="card-text">Fecha inicio: {{order.start_date|date:'d-m-Y H:i'}}.</p>
+          <p class="card-text">Tipo de servicio: {{order.order_type}}</p>
+          <p class="card-text">Coste del servicio: {{order.total_cost}}</p>
+          <a href="/orders/{{order.pk}}" class="btn btn-primary">Ver pedido </a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
 </div>
 </div>
 {% endblock %}
