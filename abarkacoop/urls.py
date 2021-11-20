@@ -20,10 +20,10 @@ admin.autodiscover()
 # Learn more here: https://docs.djangoproject.com/en/2.1/topics/http/urls/
 
 urlpatterns = [
-    
+
     path("admin/", admin.site.urls),
     path("order/",oders_wiews.list_orders, name="list_orders"),
-    path("order/<int:num>/",oders_wiews.detailed_order, name="detailed_order")
+    #path("order/<int:num>/",oders_wiews.detailed_order, name="detailed_order")
 
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) # Configurado en settings.py para mostrar media durante desarrollo
 
