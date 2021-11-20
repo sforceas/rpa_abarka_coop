@@ -15,3 +15,13 @@ def list_orders(request):
         'completed_orders':completed_orders,
     }
     return render(request,'orders/list.html',context)
+
+def detailed_order(request,pk):
+    """ Show detailed order """
+    
+    order = Order.objects.get(pk=pk)
+
+    context = {
+        'order':order,
+    }
+    return render(request,'orders/detail.html',context)
