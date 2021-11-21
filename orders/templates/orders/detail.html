@@ -6,7 +6,27 @@
 
 {% block container %}
 
- 
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Menu</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Coste por menu</th>
+        <th scope="col">Coste total</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for menu in menus %}  
+        <tr>
+            <th scope="row">{{menu.menu.name}}</th>
+            <td>{{menu.menu_ammount}}€</td>
+            <td>{{menu.menu.total_cost}}€</td>
+            <td>{{menu.total_cost}}€</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 <!--Detalle de pedido-->
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -73,3 +93,4 @@
     </div>
 </div>
 {% endblock %}
+
