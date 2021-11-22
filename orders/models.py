@@ -6,6 +6,7 @@ from django.db.models.fields.related import ForeignKey
 from products.models import Extra, Menu
 from stakeholders.models import Client
 from workers.models import Worker
+from decimal import Decimal
 
 ORDER_TYPES=[('catering','Catering'),('festival','Festival'),('wedding','Boda')]
 # Create your models here.
@@ -157,7 +158,7 @@ class ConcreteWorkerInOrder(models.Model):
 
     @property
     def calculate_total_cost(self):
-        return round(self.hours_ammount*self.worker.hour_cost,2)
+        return round(Decimal(self.hours_ammount)*self.worker.hour_cost,2)
      
     def save(self, *args, **kwargs):
         self.hours_ammount = self.calculate_hours_ammount
