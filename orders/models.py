@@ -78,11 +78,11 @@ class Order(models.Model):
 
     @property
     def calculate_profit(self):
-        return self.income-self.total_cost
+        return round(self.income-self.total_cost,2)
     
     @property
     def calculate_profit_rate(self):
-        return (self.profit/self.total_cost)*100
+        return round((self.profit/self.total_cost)*100,2)
         
     def save(self, *args, **kwargs):
         self.menu_ammount = self.calculate_menu_ammount

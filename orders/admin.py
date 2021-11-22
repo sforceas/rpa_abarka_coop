@@ -27,7 +27,7 @@ class ConcreteWorkerInOrderInline(admin.StackedInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     """Order admin"""
-    list_display = ('name','order_type','start_date','total_cost','active_flag','completed_flag') # Campos que debe mostrar en el display de admin
+    list_display = ('name','order_type','start_date','total_cost','active_flag','planned_flag','completed_flag','feedback_flag') # Campos que debe mostrar en el display de admin
     list_display_links=('name',) # Elementos linkados al detalle
     list_editable=() # Elementos editables desde admin
     inlines = [ConcreteMenuInOrderInline,ConcreteWorkerInOrderInline,ConcreteExtraInOrderInline]
