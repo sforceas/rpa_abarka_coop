@@ -6,10 +6,40 @@
 
 {% block container %}
 
+<!--Pedido-->
 <table class="table">
     <thead class="thead-dark">
       <tr>
-        <th scope="col">Menu</th>
+        <th scope="col">Pedido:</th>
+        <th scope="col">Tipo de servicio:</th>
+        <th scope="col">Cliente:</th>
+        <th scope="col">Fecha inicio:</th>
+        <th scope="col">Fecha final:</th>
+        <th scope="col">Días laborables:</th>
+        <th scope="col">Número de menús:</th>
+        <th scope="col">Coste total:</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">{{order.name}}</th>
+            <td>{{order.order_type}}</td>
+            <td>{{order.client}}</td>
+            <td>{{order.start_date|date:'d-m-Y H:i'}}</td>
+            <td>{{order.end_date|date:'d-m-Y H:i'}}</td>
+            <td>{{order.labour_days}}€</td>
+            <td>{{order.menu_ammount}}€</td>
+            <td>{{order.total_cost}}€</td>
+        </tr>
+    </tbody>
+</table>
+
+<!--Menús-->
+<h2>Coste de menús: {{order.menu_cost}}€</h2>
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Menú</th>
         <th scope="col">Cantidad</th>
         <th scope="col">Coste por menu</th>
         <th scope="col">Coste total</th>
@@ -19,7 +49,7 @@
         {% for menu in menus %}  
         <tr>
             <th scope="row">{{menu.menu.name}}</th>
-            <td>{{menu.menu_ammount}}€</td>
+            <td>{{menu.menu_ammount}} uds.</td>
             <td>{{menu.menu.total_cost}}€</td>
             <td>{{menu.total_cost}}€</td>
         </tr>
@@ -27,70 +57,56 @@
     </tbody>
 </table>
 
-<!--Detalle de pedido-->
-
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    <h1>Detalles del pedido</h1>
-    <div class="card-group">
-    <div class="card" style="width: 100%; height: 50%px;">
-        <div class="card-body">
-        <h5 class="card-title">{{order.name}}</h5>
-        <p class="card-text">Cliente: {{order.client}}.</p>
-        <p class="card-text">Fecha inicio: {{order.start_date|date:'d-m-Y H:i'}}.</p>
-        <p class="card-text">Tipo de servicio: {{order.order_type}}</p>
-        <p class="card-text">Coste del servicio: {{order.total_cost}}</p>
-        </div>
-    </div>
-    </div>
-</div>
-
-<h2>Menús</h2>
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    <h2>Coste de menús: {{order.menu_cost}} €</h2>
-    <div class="card-group">
-        {% for menu in menus %}  
-            <div class="card" style="width: 100%; height: 50%px;">
-                <div class="card-body">
-                    <h5 class="card-title">{{menu.menu.name}}</h5>
-                    <p class="card-text">Cantidad: {{menu.menu_ammount}}.</p>
-                    <p class="card-text">Coste total: {{menu.total_cost}} €.</p>                              
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-</div>
-
-<h2>Trabajadores</h2>
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    <h2>Coste de trabajadores: {{order.worker_cost}} €</h2>
-    <div class="card-group">
+<!--Turnos-->
+<h2>Coste de trabajadoras: {{order.worker_cost}}€</h2>
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Trabajadora</th>
+        <th scope="col">Tarea</th>
+        <th scope="col">Inicio turno</th>
+        <th scope="col">Final turno</th>
+        <th scope="col">Horas</th>
+        <th scope="col">Coste de jornada</th>
+      </tr>
+    </thead>
+    <tbody>
         {% for worker in workers %}  
-            <div class="card" style="width: 100%; height: 50%px;">
-                <div class="card-body">
-                    <h5 class="card-title">{{worker.worker}}</h5>
-                    <p class="card-text">Tarea: {{worker.task}}.</p>
-                    <p class="card-text">Inicio: {{worker.start_date|date:'d-m-Y H:i'}}.</p>
-                    <p class="card-text">Horas: {{worker.hours_ammount}} horas.</p>                              
-                </div>
-            </div>
+        <tr>
+            <th scope="row">{{worker.worker}}</th>
+            <td>{{worker.task}}</td>
+            <td>{{worker.start_date|date:'d-m-Y H:i'}}</td>
+            <td>{{worker.end_date|date:'d-m-Y H:i'}}</td>
+            <td>{{worker.hours_ammount}}€</td>
+            <td>{{worker.total_cost}}€</td>
+        </tr>
         {% endfor %}
-    </div>
-</div>
+    </tbody>
+</table>
 
-<h2>Extras</h2>
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    <h2>Coste de extras: {{order.worker_cost}} €</h2>
-    <div class="card-group">
+<!--Extras-->
+<h2>Coste de extras: {{order.extra_cost}}€</h2>
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Extra</th>
+        <th scope="col">Unidades</th>
+        <th scope="col">Coste por unidad</th>
+        <th scope="col">Coste total</th>
+      </tr>
+    </thead>
+    <tbody>
         {% for extra in extras %}  
-        <div class="card" style="width: 100%; height: 50%px;">
-            <div class="card-body">
-                <h5 class="card-title">{{extra.extra}}</h5>
-                <p class="card-text">Cantidad: {{extra.extra_ammount}}.</p>
-                <p class="card-text">Coste total: {{extra.total_cost}} €.</p>
-            </div>
-        </div>
+        <tr>
+            <th scope="row">{{extra.extra}}</th>
+            <td>{{extra.extra_ammount}}</td>
+            <td>{{extra.extra.unit_cost}}€</td>
+            <td>{{extra.total_cost}}€</td>
+        </tr>
         {% endfor %}
-    </div>
-</div>
+    </tbody>
+</table>
+
+
 {% endblock %}
 
