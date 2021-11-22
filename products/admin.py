@@ -98,4 +98,4 @@ class ExtraAdmin(admin.ModelAdmin):
 
     search_field= ('name','description','extra_type')
     list_filter = ('active_flag','extra_type')
-    readonly_fields = ('total_cost','created','modified')
+    readonly_fields = ('created','modified')
