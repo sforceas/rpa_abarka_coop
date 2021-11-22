@@ -19,7 +19,6 @@ class ConcreteIngredientInRecipeInline(admin.StackedInline):
     verbose_name = 'Ingrediente concreto en receta'
     verbose_name_plural = 'Ingredientes concretos en receta'
 
-
 class ConcreteRecipeInMenuInLine(admin.StackedInline):
     model = ConcreteRecipeInMenu
     extra=0
@@ -50,7 +49,7 @@ class ConcreteIngredientAdmin(admin.ModelAdmin):
 
     search_field= ('name','description','ingredient_type')
     list_filter = ('active_flag','provider','allergens')
-    readonly_fields = ('created','modified')
+    readonly_fields = ('price_unit','created','modified')
 
     def save_model(self, request, obj, form, change):
         obj.price_unit = round(obj.price_pack/obj.pack_units,2)
@@ -66,14 +65,14 @@ class AllergenAdmin(admin.ModelAdmin):
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     """Recipe admin"""
-    list_display = ('name','recipe_type','preparation_time','total_cost','active_flag') # Campos que debe mostrar en el display de admin
+    list_display = ('name','recipe_type','total_cost','active_flag') # Campos que debe mostrar en el display de admin
     list_display_links=('name',) # Elementos linkados al detalle
     list_editable=() # Elementos editables desde admin
     inlines = [ConcreteIngredientInRecipeInline]
 
     search_field= ('name','description','recipe_type')
     list_filter = ('active_flag','recipe_type')
-    readonly_fields = ('created','modified')
+    readonly_fields = ('total_cost','created','modified')
 
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
@@ -85,7 +84,7 @@ class MenuAdmin(admin.ModelAdmin):
 
     search_field= ('name','description','menu_type')
     list_filter = ('active_flag','menu_type')
-    readonly_fields = ('created','modified')
+    readonly_fields = ('total_cost','created','modified')
 
 @admin.register(Extra)
 class ExtraAdmin(admin.ModelAdmin):
@@ -96,4 +95,4 @@ class ExtraAdmin(admin.ModelAdmin):
 
     search_field= ('name','description','extra_type')
     list_filter = ('active_flag','extra_type')
-    readonly_fields = ('created','modified')
+    readonly_fields = ('total_cost','created','modified')

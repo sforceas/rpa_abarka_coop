@@ -34,5 +34,5 @@ class OrderAdmin(admin.ModelAdmin):
 
     search_field= ('name','description','order_type')
     list_filter = ('active_flag','completed_flag','order_type')
-    readonly_fields = ('created','modified')
+    readonly_fields = ('total_cost','menu_cost','extra_cost','worker_cost','profit','profit_rate','menu_ammount','created','modified')
 
