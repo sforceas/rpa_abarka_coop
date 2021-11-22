@@ -103,8 +103,8 @@ class Recipe(models.Model):
     
     min_servings=IntegerField(verbose_name='Raciones mínimas *',default=1)
     preparation_time=IntegerField(verbose_name='Tiempo de preparación (min)',blank=True)
-    ingredient_cost=DecimalField(verbose_name='Coste ingredientes por ración (€)',blank=True,max_digits=7,decimal_places=2,default=0)
-    resource_cost=DecimalField(verbose_name='Coste recursos por ración (€) *',blank=True,max_digits=7,decimal_places=2,default=0)#Calculado por horas y gasto de recursos
+    #ingredient_cost=DecimalField(verbose_name='Coste ingredientes por ración (€)',blank=True,max_digits=7,decimal_places=2,default=0)
+    #resource_cost=DecimalField(verbose_name='Coste recursos por ración (€) *',blank=True,max_digits=7,decimal_places=2,default=0)#Calculado por horas y gasto de recursos
     total_cost=DecimalField(verbose_name='Coste total por ración (€)',blank=True,max_digits=7,decimal_places=2,default=0)
 
     active_flag=BooleanField(verbose_name='Activo',default=True)
@@ -120,8 +120,7 @@ class Recipe(models.Model):
         return round(ingredient_cost,2)
     
     def save(self, *args, **kwargs):
-        self.ingredient_cost = self.calculate_ingredient_cost
-        self.total_cost=self.ingredient_cost
+        self.total_cost=self.calculate_ingredient_cost
         super(Recipe, self).save(*args, **kwargs)
 
 
