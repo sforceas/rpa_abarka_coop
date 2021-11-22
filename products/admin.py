@@ -11,6 +11,7 @@ class ConcreteIngredientInline(admin.StackedInline):
     can_delete = True
     verbose_name = 'Ingrediente concreto'
     verbose_name_plural = 'Ingredientes concretos'
+    readonly_fields = ('price_unit',)
 
 class ConcreteIngredientInRecipeInline(admin.StackedInline):
     model = ConcreteIngredientInRecipe
@@ -18,6 +19,7 @@ class ConcreteIngredientInRecipeInline(admin.StackedInline):
     can_delete = True
     verbose_name = 'Ingrediente concreto en receta'
     verbose_name_plural = 'Ingredientes concretos en receta'
+    readonly_fields = ('cost_per_serving',)
 
 class ConcreteRecipeInMenuInLine(admin.StackedInline):
     model = ConcreteRecipeInMenu
@@ -25,6 +27,7 @@ class ConcreteRecipeInMenuInLine(admin.StackedInline):
     can_delete = True
     verbose_name = 'Receta'
     verbose_name_plural = 'Recetas'
+    readonly_fields = ('cost_per_menu',)
 
 # Register your models here.
 

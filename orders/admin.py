@@ -8,6 +8,7 @@ class ConcreteMenuInOrderInline(admin.StackedInline):
     can_delete = True
     verbose_name = 'Menú'
     verbose_name_plural = 'Menús'
+    readonly_fields = ('total_cost',)
 
 class ConcreteExtraInOrderInline(admin.StackedInline):
     model = ConcreteExtraInOrder
@@ -15,6 +16,7 @@ class ConcreteExtraInOrderInline(admin.StackedInline):
     can_delete = True
     verbose_name = 'Extra'
     verbose_name_plural = 'Extras'
+    readonly_fields = ('total_cost',)
 
 class ConcreteWorkerInOrderInline(admin.StackedInline):
     model = ConcreteWorkerInOrder
@@ -22,6 +24,7 @@ class ConcreteWorkerInOrderInline(admin.StackedInline):
     can_delete = True
     verbose_name = 'Trabajador'
     verbose_name_plural = 'Trabajadores'
+    readonly_fields = ('total_cost',)
 
 # Register your models here.
 @admin.register(Order)
