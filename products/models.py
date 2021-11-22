@@ -121,14 +121,6 @@ class Recipe(models.Model):
             ingredient_cost = ingredient_cost+ingredient.cost_per_serving
         return round(ingredient_cost,2)
     
-    @property
-    def calculate_resource_cost(self):
-        resource_cost=0
-        concrete_resources_in_recipe=list(ConcreteResourceInRecipe.objects.filter(recipe=self))
-        for resource in concrete_resources_in_recipe:
-            resource_cost = resource_cost+resource.cost_per_serving
-        return round(resource_cost,2)
-
     def save(self, *args, **kwargs):
         self.ingredient_cost = self.calculate_ingredient_cost
         self.resource_cost = self.calculate_resource_cost
@@ -147,7 +139,7 @@ class ConcreteIngredientInRecipe(models.Model):
     concrete_ingredient=ForeignKey(to=ConcreteIngredient ,verbose_name='Ingrediente *',on_delete=PROTECT)
     ammout_per_serving=DecimalField(verbose_name='Cantidad por ración (kg,litro o uds.) *',blank=True,max_digits=7,decimal_places=2,default='0')
     cost_per_serving=DecimalField(verbose_name='Coste por ración (€)',blank=True,max_digits=7,decimal_places=2,default='0')
-
+    
     @property
     def calculate_cost_per_ingredient(self):
         return round(self.ammout_per_serving*self.concrete_ingredient.price_unit,2)
