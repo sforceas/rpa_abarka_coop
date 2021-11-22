@@ -18,6 +18,7 @@ class Order(models.Model):
     description=CharField(verbose_name='Detalles del evento',max_length=600,blank=True,default='')
     order_type=CharField(verbose_name='Tipo de pedido *',max_length=30,choices=ORDER_TYPES,default='')
     client=ForeignKey(to=Client,verbose_name='Cliente *',on_delete=PROTECT)
+    adress=CharField(verbose_name='Dirección de entrega *',max_length=600,blank=True,default='')
 
     start_date=DateTimeField(verbose_name='Fecha de inicio *')
     end_date=DateTimeField(verbose_name='Fecha de finalización *')
@@ -28,9 +29,15 @@ class Order(models.Model):
     worker_cost=DecimalField(verbose_name='Coste de trabajadores (€)',blank=True,max_digits=7,decimal_places=2,default=0)
     extra_cost=DecimalField(verbose_name='Coste de extras (€)',blank=True,max_digits=7,decimal_places=2,default=0)
     total_cost=DecimalField(verbose_name='Coste total (€)',blank=True,max_digits=7,decimal_places=2,default=0)
+    income = DecimalField(verbose_name='Facturación sin IVA (€)',blank=True,max_digits=7,decimal_places=2,default=0)
+    profit = DecimalField(verbose_name='Beneficio (€)',blank=True,max_digits=7,decimal_places=2,default=0)
+    profit_rate = DecimalField(verbose_name='Rentabilidad (%)',blank=True,max_digits=3,decimal_places=2,default=0)
 
+    preparation_comments=TextField(verbose_name='Comentarios sobre preparación',blank=True)
+    planned_flag=BooleanField(verbose_name='Planificado',default=False)
     completed_flag=BooleanField(verbose_name='Completado',default=False)
     completed_comments=TextField(verbose_name='Observaciones final de evento',blank=True)
+    feedback_flag=BooleanField(verbose_name='Feedback',default=False)
 
     active_flag=BooleanField(verbose_name='Activo',default=True)
     created=DateTimeField(verbose_name='Creado',auto_now_add=True)
@@ -69,13 +76,22 @@ class Order(models.Model):
             menu_ammount = menu_ammount+menu.menu_ammount
         return round(menu_ammount,2)
 
+    @property
+    def calculate_profit(self):
+        return self.income-self.total_cost
+    
+    @property
+    def calculate_profit_rate(self):
+        return (self.profit/self.total_cost)*100
+        
     def save(self, *args, **kwargs):
         self.menu_ammount = self.calculate_menu_ammount
         self.menu_cost = self.calculate_menu_cost
         self.worker_cost = self.calculate_worker_cost
         self.extra_cost = self.calculate_extra_cost
-
         self.total_cost = self.menu_cost+self.extra_cost+self.worker_cost
+        self.profit = self.calculate_profit
+        self.profit_rate = self.calculate_profit_rate
         super(Order, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -130,16 +146,21 @@ class ConcreteWorkerInOrder(models.Model):
 
     start_date=DateTimeField(verbose_name='Fecha de inicio *')
     end_date=DateTimeField(verbose_name='Fecha de finalización *')
-    hours_ammount=IntegerField(verbose_name='Número de horas *',blank=True,default='1')
+    hours_ammount=IntegerField(verbose_name='Número de horas (en decimal)',blank=True,default='1')
     total_cost=DecimalField(verbose_name='Coste total (€)',blank=True,max_digits=7,decimal_places=2,default='0')
 
-   #CALCULAR HORAS A PARTIR DE HORARIO 
+    @property
+    def calculate_hours_ammount(self):
+        time_delta=self.end_date-self.start_date
+        hours_ammount = round(time_delta.total_seconds()/3600,2)
+        return hours_ammount
 
     @property
     def calculate_total_cost(self):
         return round(self.hours_ammount*self.worker.hour_cost,2)
      
     def save(self, *args, **kwargs):
+        self.hours_ammount = self.calculate_hours_ammount
         self.total_cost = self.calculate_total_cost
         super(ConcreteWorkerInOrder, self).save(*args, **kwargs)
         self.order.save()

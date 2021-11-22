@@ -3,7 +3,7 @@ from django.db.models.fields import BooleanField, CharField, DateTimeField, Deci
 from django.db.models.fields.related import ForeignKey
 
 
-WORKER_TYPES=[('partner','Socia'),('extern','Externa')]
+WORKER_TYPES=[('partner','Socia'),('worker','Trabajadora'),('extern','Externa')]
 
 # Create your models here.
 class Worker(models.Model):
