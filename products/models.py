@@ -26,8 +26,6 @@ INGREDIENT_TYPES = [
     ('others','Otros'),
     ]
 
-RESOURCE_TYPES = [('person','Personal (hora)'),('machine','Máquina (hora)'),('transport','Transporte (hora)')]
-
 RECIPE_TYPES = [('drink','Bebidas'),('hot_drink','Bebidas calientes'),('snacks','Snacks y entrantes'),('main','Principales'),('sauces','Salsas'),('desserts','Postres y dulces')]
 
 MENU_TYPES = [('coffee_break','Coffee Break'),('festival','Ferias y festivales'),('wedding','Bodas'),('experiencie','Experiencia gastronómica')]
@@ -154,10 +152,6 @@ class ConcreteIngredientInRecipe(models.Model):
         """Return title."""
         return f'{self.concrete_ingredient} in {self.recipe}'
 
-
-    def __str__(self):
-        """Return title."""
-        return f'{self.resource} in {self.recipe}'
 
 class Menu(models.Model):
 
