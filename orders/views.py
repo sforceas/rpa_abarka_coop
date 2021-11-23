@@ -1,8 +1,5 @@
-from django.shortcuts import render
-
-
+from django.shortcuts import redirect, render
 from orders.models import ConcreteExtraInOrder, ConcreteMenuInOrder, ConcreteWorkerInOrder, Order
-
 
 # Create your views here.
 
@@ -34,3 +31,13 @@ def detailed_order(request,pk):
     }
 
     return render(request,'orders/detail.html',context)
+
+def generate_work_schedule(request,pk):
+    order = Order.objects.get(pk=pk)
+    workers_in_order=ConcreteWorkerInOrder.objects.filter(order=order).order_by('-start_date')
+    
+    context = {
+        'order':order,
+        'workers':workers_in_order,
+    }
+    return render(request,'orders/schedule.html',context)

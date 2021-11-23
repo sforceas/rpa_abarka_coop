@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block head_content %} 
+
+{% endblock %} 
+
+{% block container %}
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Trabajadora</th>
+        <th scope="col">Tarea</th>
+        <th scope="col">Inicio turno</th>
+        <th scope="col"></th>
+        <th scope="col">Final turno</th>
+        <th scope="col"></th>
+        <th scope="col">Horas totales</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for worker in workers %}  
+        <tr>
+            <th scope="row">{{worker.worker}}</th>
+            <td>{{worker.task}}</td>
+            <td>{{worker.start_date|date:'d-m-Y'}}</td>
+            <td>{{worker.start_date|date:'H:i'}}</td>
+            <td>{{worker.end_date|date:'H:i'}}</td>
+            <td>{{worker.end_date|date:'H:i'}}</td>
+            <td>{{worker.hours_ammount}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %} 

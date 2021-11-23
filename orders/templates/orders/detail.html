@@ -13,6 +13,7 @@
         <th scope="col">Pedido:</th>
         <th scope="col">Tipo de servicio:</th>
         <th scope="col">Cliente:</th>
+        <th scope="col">Dirección del servicio:</th>
         <th scope="col">Fecha inicio:</th>
         <th scope="col">Fecha final:</th>
         <th scope="col">Días laborables:</th>
@@ -22,9 +23,10 @@
     </thead>
     <tbody>
         <tr>
-            <th scope="row">{{order.name}}</th>
+            <th scope="">{{order.name}}</th>
             <td>{{order.order_type}}</td>
             <td>{{order.client}}</td>
+            <td>{{order.adress}}</td>
             <td>{{order.start_date|date:'d-m-Y H:i'}}</td>
             <td>{{order.end_date|date:'d-m-Y H:i'}}</td>
             <td>{{order.labour_days}}€</td>
@@ -77,12 +79,13 @@
             <td>{{worker.task}}</td>
             <td>{{worker.start_date|date:'d-m-Y H:i'}}</td>
             <td>{{worker.end_date|date:'d-m-Y H:i'}}</td>
-            <td>{{worker.hours_ammount}}€</td>
+            <td>{{worker.hours_ammount}}</td>
             <td>{{worker.total_cost}}€</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+<a href="/order/{{order.pk}}/schedule" class="btn btn-primary"></a>
 
 <!--Extras-->
 <h2>Coste de extras: {{order.extra_cost}}€</h2>
